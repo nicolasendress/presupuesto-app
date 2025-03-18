@@ -1,4 +1,3 @@
-// Importa el componente principal del formulario
 import Formulario from "components/Formulario";
 
 /**

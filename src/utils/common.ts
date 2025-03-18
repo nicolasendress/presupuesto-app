@@ -4,14 +4,14 @@
  * @returns String formateado en CLP.
  */
 export function formatCLP(value: number): string {
-    return new Intl.NumberFormat("es-CL", {
-      style: "currency",
-      currency: "CLP",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(value);
-  }
-  
+  return new Intl.NumberFormat("es-CL", {
+    style: "currency",
+    currency: "CLP",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(value);
+}
+
 /**
  * Define la interfaz para los totales calculados.
  */
@@ -54,11 +54,16 @@ export function computeTotals(
  */
 export function obtenerNumeroPresupuesto(): string {
   if (typeof window !== "undefined") {
-    const num = sessionStorage.getItem("presupuestoNumber");
-    if (num !== null) {
-      return num.padStart(7, "0");
-    } else {
-      sessionStorage.setItem("presupuestoNumber", "1");
+    try {
+      const num = sessionStorage.getItem("presupuestoNumber");
+      if (num !== null) {
+        return num.padStart(7, "0");
+      } else {
+        sessionStorage.setItem("presupuestoNumber", "1");
+        return "0000001";
+      }
+    } catch (error) {
+      console.error("Error accessing sessionStorage:", error);
       return "0000001";
     }
   }
@@ -71,11 +76,16 @@ export function obtenerNumeroPresupuesto(): string {
  */
 export function incrementarNumeroPresupuesto(): string {
   if (typeof window !== "undefined") {
-    const num = sessionStorage.getItem("presupuestoNumber");
-    const number = num ? parseInt(num, 10) : 0;
-    const newNumber = (number + 1).toString();
-    sessionStorage.setItem("presupuestoNumber", newNumber);
-    return newNumber.padStart(7, "0");
+    try {
+      const num = sessionStorage.getItem("presupuestoNumber");
+      const number = num ? parseInt(num, 10) : 0;
+      const newNumber = (number + 1).toString();
+      sessionStorage.setItem("presupuestoNumber", newNumber);
+      return newNumber.padStart(7, "0");
+    } catch (error) {
+      console.error("Error accessing sessionStorage:", error);
+      return "0000001";
+    }
   }
   return "0000001";
 }

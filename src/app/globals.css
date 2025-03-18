@@ -9,10 +9,9 @@
 }
 
 /* Estilos básicos para el cuerpo de la aplicación */
+/* Se elimina background-color y color para dejar que Bootstrap los gestione */
 body {
   font-family: var(--font-body);
-  background-color: #f8f9fa; /* Fondo claro de Bootstrap */
-  color: #212529;           /* Texto oscuro */
   margin: 0;
   padding: 0;
 }
@@ -24,13 +23,11 @@ body {
 /* Encabezados (h1, h2, h3, etc.) */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
-  color: #212529;
   margin-bottom: 16px;
 }
 
 /* Título específico para formularios */
 .form-title {
-  color: #212529;
   font-family: var(--font-heading);
   font-size: 2rem;
   font-weight: bold;
@@ -53,7 +50,6 @@ h1, h2, h3, h4, h5, h6 {
 /* Estilos para inputs y textareas */
 .form-control {
   background-color: #ffffff;
-  color: #212529;
   border: 1px solid #ced4da;
 }
 
@@ -64,7 +60,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .form-control:focus {
   background-color: #ffffff !important;
-  color: #212529 !important;
   border-color: #80bdff !important;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
 }
@@ -79,10 +74,7 @@ h1, h2, h3, h4, h5, h6 {
   border-collapse: collapse;
 }
 
-.table th,
-.table td {
-  color: #212529;
-}
+/* Puedes dejar que Bootstrap gestione los colores de texto en tablas */
 
 /* Estilo para el iframe (previsualización del PDF) */
 iframe {

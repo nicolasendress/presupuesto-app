@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { saveAs } from "file-saver";
 import { generatePDF } from "@/utils/pdfutils";
 import { PdfDatos } from "@/types/pdf";
@@ -20,6 +20,15 @@ export default function BotonPDF({ datos, onDownload }: Props) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Efecto de limpieza para revocar la URL del blob al desmontar el componente
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
 
   // Genera una previsualización del PDF y la muestra en un modal
   const handleGeneratePreview = async () => {
@@ -41,12 +50,13 @@ export default function BotonPDF({ datos, onDownload }: Props) {
     try {
       const pdfBytes = await generatePDF(datos);
       const blob = new Blob([pdfBytes], { type: "application/pdf" });
+      // Corrección del template literal para formar el nombre del archivo
       const fileName =
         datos.proyecto && datos.proyecto.trim() !== ""
           ? `${datos.proyecto}.pdf`
           : "Presupuesto.pdf";
       saveAs(blob, fileName);
-      onDownload();  // Incrementa el número de presupuesto tras la descarga
+      onDownload(); // Incrementa el número de presupuesto tras la descarga
     } catch (err) {
       console.error("Error al descargar:", err);
       setError("Error al descargar el PDF.");
@@ -82,13 +92,13 @@ export default function BotonPDF({ datos, onDownload }: Props) {
       {error && <div className="text-danger mt-2">{error}</div>}
 
       {showModal && (
-        <div className="modal show d-block" tabIndex={-1}>
+        <div className="modal show d-block" tabIndex={-1} role="dialog" aria-modal="true">
           <div className="modal-dialog modal-dialog-centered modal-xl">
             <div
               className="modal-content"
               style={{
                 backgroundColor: "#424242",
-                border: "none",
+                border: "none"
               }}
             >
               <div
@@ -96,7 +106,7 @@ export default function BotonPDF({ datos, onDownload }: Props) {
                 style={{
                   borderBottom: "none",
                   backgroundColor: "#424242",
-                  margin: 0,
+                  margin: 0
                 }}
               >
                 <h5 className="modal-title text-white mb-0">
@@ -106,6 +116,7 @@ export default function BotonPDF({ datos, onDownload }: Props) {
                   type="button"
                   className="btn-close btn-close-white"
                   onClick={handleCloseModal}
+                  aria-label="Cerrar modal"
                   style={{ outline: "none" }}
                 ></button>
               </div>
@@ -114,7 +125,7 @@ export default function BotonPDF({ datos, onDownload }: Props) {
                 className="modal-body p-0"
                 style={{
                   margin: 0,
-                  backgroundColor: "#424242",
+                  backgroundColor: "#424242"
                 }}
               >
                 {previewUrl && (
@@ -125,7 +136,7 @@ export default function BotonPDF({ datos, onDownload }: Props) {
                     style={{
                       height: "600px",
                       border: "none",
-                      backgroundColor: "#424242",
+                      backgroundColor: "#424242"
                     }}
                   ></iframe>
                 )}
